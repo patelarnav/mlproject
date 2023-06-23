@@ -112,8 +112,8 @@ class DataTransformation:
                 obj=preprocessing_obj
 
             )
-            train_arr=0
-            test_arr=0
+            # train_arr=0
+            # test_arr=0
             return (
                 train_arr,
                 test_arr,
