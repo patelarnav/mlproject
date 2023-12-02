@@ -1,17 +1,20 @@
+
 import sys
-import os
 from dataclasses import dataclass
 
-import numpy as np
-import pandas as pd 
+import numpy as np 
+import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import OneHotEncoder,StandardScaler
 from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder,StandardScaler
 
 from src.exception import CustomException
 from src.logger import logging
+import os
+
 from src.utils import save_object
+
 @dataclass
 class DataTransformationConfig:
     preprocessor_obj_file_path=os.path.join('artifacts',"preprocessor.pkl")
@@ -26,13 +29,13 @@ class DataTransformation:
         
         '''
         try:
-            numerical_columns = ["writing score", "reading score"]
+            numerical_columns = ["writing_score", "reading_score"]
             categorical_columns = [
                 "gender",
-                "race/ethnicity",
-                "parental level of education",
+                "race_ethnicity",
+                "parental_level_of_education",
                 "lunch",
-                "test preparation course",
+                "test_preparation_course",
             ]
 
             num_pipeline= Pipeline(
@@ -76,22 +79,23 @@ class DataTransformation:
         try:
             train_df=pd.read_csv(train_path)
             test_df=pd.read_csv(test_path)
-            # print(train_df.columns)
+
             logging.info("Read train and test data completed")
 
             logging.info("Obtaining preprocessing object")
 
             preprocessing_obj=self.get_data_transformer_object()
 
-            target_column_name="math score"
-            numerical_columns = ["writing score", "reading score"]
-
+            target_column_name="math_score"
+            numerical_columns = ["writing_score", "reading_score"]
+            # target_column_name= "math score"
             input_feature_train_df=train_df.drop(columns=[target_column_name],axis=1)
+            
             target_feature_train_df=train_df[target_column_name]
-
+            
             input_feature_test_df=test_df.drop(columns=[target_column_name],axis=1)
             target_feature_test_df=test_df[target_column_name]
-
+            target_column_name= "math_score"
             logging.info(
                 f"Applying preprocessing object on training dataframe and testing dataframe."
             )
@@ -112,8 +116,7 @@ class DataTransformation:
                 obj=preprocessing_obj
 
             )
-            # train_arr=0
-            # test_arr=0
+
             return (
                 train_arr,
                 test_arr,

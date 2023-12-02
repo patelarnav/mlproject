@@ -1,6 +1,8 @@
+
 import os
 import sys
 from dataclasses import dataclass
+
 from catboost import CatBoostRegressor
 from sklearn.ensemble import (
     AdaBoostRegressor,
@@ -25,6 +27,7 @@ class ModelTrainerConfig:
 class ModelTrainer:
     def __init__(self):
         self.model_trainer_config=ModelTrainerConfig()
+
 
     def initiate_model_trainer(self,train_array,test_array):
         try:
@@ -107,7 +110,11 @@ class ModelTrainer:
             predicted=best_model.predict(X_test)
 
             r2_square = r2_score(y_test, predicted)
-            return best_model,r2_square 
+            return r2_square
+            
 
+
+
+            
         except Exception as e:
             raise CustomException(e,sys)
